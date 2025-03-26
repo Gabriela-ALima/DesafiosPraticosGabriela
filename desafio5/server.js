@@ -24,6 +24,11 @@ const server = createServer((request, response) => {
             const queryParams = Object.fromEntries(url.searchParams.entries());
             const num = parseInt(queryParams.number);
 
+            if (isNaN(num) || !Number.isInteger(num) || num < 0) {
+                response.statusCode = 400;
+                return response.end(JSON.stringify({ error: "Invalid number parameter" }));
+            }
+
             const result = isPrime(num);
             response.statusCode = 200;
             response.end(JSON.stringify({ isPrime: result }));
